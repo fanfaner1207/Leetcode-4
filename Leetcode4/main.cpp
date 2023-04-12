@@ -5,27 +5,51 @@ using namespace std;
 
 class Solution {
 public:
-	double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
-		if (nums1.size() + nums2.size() % 2 == 0) {//案计
-			for (int i = 0, j = 0, median = (nums1.size() + nums2.size()) / 2 + 1; median--) {
-				if (nums1[i] < nums2[j] || j>nums2.size()) {//材兵ン琌num2
-					i++;
-				}
-				else {
-					j++;
-				}
+	vector<int> sortarray(vector<int>& nums1, vector<int>& nums2, size_t nums1Size, size_t nums2Size, vector<int>& tmp) {
+		size_t median = (nums1Size + nums2Size) / 2 + 1;
+		for (int i = 0, j = 0; median > 0; median--) {
+			if (j > nums2Size) {
+				tmp.push_back(nums1[i]);
+				i++;
+				continue;
 			}
-			return;
+			else {
+				tmp.push_back(nums2[j]);
+				j++;
+				continue;
+			}
+			if (nums1[i] < nums2[j]) {//材兵ン琌num2
+				tmp.push_back(nums1[i]);
+				i++;
+			}
+			else {
+				tmp.push_back(nums2[j]);
+				j++;
+			}
+		}
+		return tmp;
+	}
+	double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
+		vector<int> tmp;
+		size_t nums1Size = nums1.size();
+		size_t nums2Size = nums2.size();
+
+		if ((nums1Size + nums2Size) % 2 == 0) {//案计
+			tmp = sortarray(nums1, nums2, nums1Size, nums2Size, tmp);
+			size_t tmpSize = tmp.size();
+			return	(tmp[tmpSize - 1] + tmp[tmpSize - 2]) / 2.0;
 		}
 		else {//计
-			return;
+			tmp = sortarray(nums1, nums2, nums1Size, nums2Size, tmp);
+			size_t tmpSize = tmp.size();
+			return tmp[tmpSize - 1];
 		}
 	}
 };
 
 int main() {
-	vector<int> v1 = { 1,3 };
-	vector<int> v2 = { 2 };
+	vector<int> v1 = { 1,2 };
+	vector<int> v2 = { 3,4 };
 	Solution S;
-	S.findMedianSortedArrays(v1, v2);
+	cout << fixed << setprecision(5) << S.findMedianSortedArrays(v1, v2) << endl;
 }
