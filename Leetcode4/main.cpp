@@ -8,12 +8,12 @@ public:
 	vector<int> sortarray(vector<int>& nums1, vector<int>& nums2, size_t nums1Size, size_t nums2Size, vector<int>& tmp) {
 		size_t median = (nums1Size + nums2Size) / 2 + 1;
 		for (int i = 0, j = 0; median > 0; median--) {
-			if (j > nums2Size) {
+			if (j >= nums2Size) {
 				tmp.push_back(nums1[i]);
 				i++;
 				continue;
 			}
-			else {
+			else if (i >= nums1Size) {
 				tmp.push_back(nums2[j]);
 				j++;
 				continue;
@@ -33,13 +33,14 @@ public:
 		vector<int> tmp;
 		size_t nums1Size = nums1.size();
 		size_t nums2Size = nums2.size();
-
-		if ((nums1Size + nums2Size) % 2 == 0) {//案计
+		if ((nums1Size + nums2Size) % 2 == 0) {
+			//案计
 			tmp = sortarray(nums1, nums2, nums1Size, nums2Size, tmp);
 			size_t tmpSize = tmp.size();
 			return	(tmp[tmpSize - 1] + tmp[tmpSize - 2]) / 2.0;
 		}
-		else {//计
+		else {
+			//计
 			tmp = sortarray(nums1, nums2, nums1Size, nums2Size, tmp);
 			size_t tmpSize = tmp.size();
 			return tmp[tmpSize - 1];
